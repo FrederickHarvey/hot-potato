@@ -2,10 +2,6 @@ namespace SpriteKind {
     export const leftPaddle = SpriteKind.create()
     export const rightPaddle = SpriteKind.create()
 }
-sprites.onOverlap(SpriteKind.Player, SpriteKind.rightPaddle, function (sprite, otherSprite) {
-    Right_paddle.vx = Right_paddle.vx - 0
-    info.player2.changeScoreBy(1)
-})
 function left_paddle () {
     leftPaddles = sprites.create(img`
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
@@ -68,53 +64,39 @@ function hotPotato () {
     Hot_potato.setVelocity(100, 100)
     Hot_potato.setFlag(SpriteFlag.BounceOnWall, true)
 }
-function rightPaddle2 () {
-    Right_paddle = sprites.create(img`
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . d . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . d d . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . d d . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . d d . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . d d . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . d d . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . d d . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . d d . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . 1 . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . 1 . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . 1 . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . f f . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . f f . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . f f . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . f f . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . f f . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . f f . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . f f . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . f f . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-`, SpriteKind.rightPaddle)
-    controller.player2.moveSprite(Right_paddle, 0, 150)
-    Right_paddle.setFlag(SpriteFlag.StayInScreen, true)
-    Right_paddle.right = 160
-}
-sprites.onOverlap(SpriteKind.Player, SpriteKind.leftPaddle, function (sprite, otherSprite) {
-    leftPaddles.vx = leftPaddles.vx - 1
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
+    Hot_potato.vx = Block_1.vx - 45
     info.changeScoreBy(1)
+    Block_1.destroy()
+})
+info.onCountdownEnd(function () {
+    game.reset()
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.leftPaddle, function (sprite, otherSprite) {
+    Hot_potato.vx = leftPaddles.x - 45
 })
 let Hot_potato: Sprite = null
 let leftPaddles: Sprite = null
-let Right_paddle: Sprite = null
+let Block_1: Sprite = null
+scene.setBackgroundColor(9)
 hotPotato()
 left_paddle()
-rightPaddle()
-scene.setBackgroundColor(9)
+Block_1 = sprites.create(img`
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . 5 5 . . . . . . . . . 
+. . . . . 5 5 . . . . . . . . . 
+. . . . . 5 5 . . . . . . . . . 
+. . . . . 5 5 . . . . . . . . . 
+. . . . . 5 5 . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+`, SpriteKind.Enemy)
+info.startCountdown(60)
